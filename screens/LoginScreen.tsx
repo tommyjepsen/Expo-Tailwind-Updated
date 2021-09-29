@@ -3,10 +3,18 @@ import { Image, TouchableOpacity } from "react-native";
 import { t } from "react-native-tailwindcss";
 import { Text, View } from "../components/Themed";
 import { TextInput } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const unsplash = require("../assets/images/unsplash.jpg");
 
 export default function LoginScreen({ navigation }: any) {
-    const onLogin = () => {
+    const onLogin = async () => {
+        try {
+            await AsyncStorage.setItem("@storage_Key", "username");
+        } catch (e) {
+            console.log("e", e);
+
+            // saving error
+        }
         navigation.reset({
             index: 0,
             routes: [{ name: "Root" }],
@@ -62,7 +70,7 @@ export default function LoginScreen({ navigation }: any) {
                     <TextInput
                         style={[t.wFull, t.bgGray200, t.p4, t.rounded]}
                         keyboardType="visible-password"
-						textContentType="password"
+                        textContentType="password"
                         placeholder="Enter your password"
                     ></TextInput>
                 </View>
