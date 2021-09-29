@@ -11,11 +11,9 @@ export default function TabOneScreen() {
         try {
             const value = await AsyncStorage.getItem("@storage_Key");
             if (value !== null) {
-                // value previously stored
                 console.log("value", value);
             }
         } catch (e) {
-            // error reading value
             console.log("e", e);
         }
     };

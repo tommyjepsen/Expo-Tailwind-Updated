@@ -4,22 +4,41 @@ import { t } from "react-native-tailwindcss";
 import { Text, View } from "../components/Themed";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
 const unsplash = require("../assets/images/unsplash.jpg");
 
 export default function LoginScreen({ navigation }: any) {
+    const [user, setUser] = useState<any | null>(null);
+
     const onLogin = async () => {
         try {
             await AsyncStorage.setItem("@storage_Key", "username");
+            setUser("username");
         } catch (e) {
             console.log("e", e);
-
-            // saving error
         }
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "Root" }],
-        });
     };
+
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem("@storage_Key");
+            setUser(value);
+        } catch (e) {
+            console.log("e", e);
+        }
+    };
+
+    React.useEffect(() => {
+        if (user === null) {
+            getData();
+        } else {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "Root" }],
+            });
+        }
+    }, [user]);
+
     return (
         <View style={[t.flex, t.hFull, t.wFull]}>
             <View style={[t.flex, t.justifyCenter, t.flex1]}>
